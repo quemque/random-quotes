@@ -42,7 +42,7 @@ const quotes = [
     author: "Theodore Roosevelt",
   },
 ];
-
+//generate quote
 const quoteElement = document.getElementById("quote");
 const generateBtn = document.getElementById("generate-btn");
 const quoteAuthorElement = document.getElementById("quote-author");
@@ -61,3 +61,19 @@ function generateRandomQuote() {
 }
 
 generateBtn.addEventListener("click", generateRandomQuote);
+
+//theme
+const themeBtn = document.getElementById("theme-btn");
+
+function toggleTheme() {
+  document.body.classList.toggle("light-theme");
+
+  const isLight = document.body.classList.contains("light-theme");
+  localStorage.setItem("lightTheme", isLight);
+}
+
+if (localStorage.getItem("lightTheme") === "true") {
+  document.body.classList.add("light-theme");
+}
+
+themeBtn.addEventListener("click", toggleTheme);
