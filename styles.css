@@ -37,12 +37,13 @@ body.light-theme {
   background-color: #f5f5f5;
   color: #333;
 }
+
 .favorite-btn {
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  align-self: flex-start; /* Выравниваем кнопку по верху текста */
+  align-self: flex-start;
 }
 
 .favorite-btn img {
@@ -50,24 +51,29 @@ body.light-theme {
   height: 32px;
   display: block;
 }
+
 .quote-container {
   display: flex;
-  align-items: center; /* Выравниваем по вертикали */
-  justify-content: center; /* Центрируем по горизонтали */
-  gap: 15px; /* Расстояние между текстом и кнопкой */
-  margin-bottom: 20px; /* Отступ снизу перед кнопкой генерации */
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .quote-text {
-  text-align: center; /* Текст остается по центру */
+  text-align: center;
 }
+
 .parent-of-button {
-  background: none; /* или transparent */
+  background: none;
 }
+
 .container {
   max-width: 600px;
   margin: 50px auto;
   text-align: center;
+  padding: 0 10px;
 }
 
 .btn {
@@ -86,4 +92,50 @@ body.light-theme {
 
 #quote {
   font-style: italic;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .quote-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .favorite-btn {
+    align-self: center;
+    margin-top: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 1em;
+  }
+
+  .theme-toggle {
+    top: 10px;
+    left: 10px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .theme-toggle img {
+    width: 100%;
+    height: 100%;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  #quote,
+  #quote-author {
+    font-size: 1em;
+    text-align: center;
+    padding: 0 5px;
+  }
+
+  .favorite-btn img {
+    width: 28px;
+    height: 28px;
+  }
 }
