@@ -37,7 +37,22 @@ body.light-theme {
   background-color: #f5f5f5;
   color: #333;
 }
-
+.favorite-btn {
+  background: transparent; /* Прозрачный фон */
+  border: none; /* Убираем границу */
+  padding: 0; /* Убираем отступы */
+  cursor: pointer; /* Курсор-указатель */
+  margin-top: 10px;
+}
+.favorite-btn img {
+  display: block; /* Убирает лишние отступы снизу */
+  background: transparent; /* На всякий случай */
+  width: 32px; /* Пример размера */
+  height: 32px;
+}
+.parent-of-button {
+  background: none; /* или transparent */
+}
 .container {
   max-width: 600px;
   margin: 50px auto;
