@@ -38,42 +38,50 @@ body.light-theme {
   color: #333;
 }
 
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.quote-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.quote-text-wrapper {
+  flex: 1;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+#quote {
+  font-style: italic;
+  margin: 0;
+}
+
+#quote-author {
+  margin: 5px 0 0;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
 .favorite-btn {
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .favorite-btn img {
   width: 32px;
   height: 32px;
   display: block;
-}
-
-.quote-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.quote-text {
-  text-align: center;
-}
-
-.parent-of-button {
-  background: none;
-}
-
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  text-align: center;
-  padding: 0 10px;
 }
 
 .btn {
@@ -90,20 +98,28 @@ body.light-theme {
   background-color: #0056b3;
 }
 
-#quote {
-  font-style: italic;
+.parent-of-button {
+  background: none;
 }
 
-/* Responsive styles */
+/* Адаптивность */
 @media (max-width: 600px) {
   .quote-container {
     flex-direction: column;
     align-items: center;
   }
 
+  .quote-text-wrapper {
+    text-align: center;
+  }
+
   .favorite-btn {
-    align-self: center;
     margin-top: 10px;
+  }
+
+  .favorite-btn img {
+    width: 28px;
+    height: 28px;
   }
 
   .btn {
@@ -118,11 +134,6 @@ body.light-theme {
     height: 35px;
   }
 
-  .theme-toggle img {
-    width: 100%;
-    height: 100%;
-  }
-
   h1 {
     font-size: 1.5em;
   }
@@ -130,12 +141,6 @@ body.light-theme {
   #quote,
   #quote-author {
     font-size: 1em;
-    text-align: center;
     padding: 0 5px;
-  }
-
-  .favorite-btn img {
-    width: 28px;
-    height: 28px;
   }
 }

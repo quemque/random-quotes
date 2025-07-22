@@ -11,6 +11,7 @@ function generateRandomQuote() {
     randomIndex = Math.floor(Math.random() * quotes.length);
   } while (randomIndex === lastIndex && quotes.length > 1);
   lastIndex = randomIndex;
+  currentQuoteIndex = randomIndex;
   const { quote, author } = quotes[randomIndex];
 
   quoteElement.textContent = '"' + quote + '"';
@@ -18,7 +19,20 @@ function generateRandomQuote() {
 }
 
 generateBtn.addEventListener("click", generateRandomQuote);
+//favorite quote
+let currentQuoteIndex = null;
 
+const favoritebutton = document.getElementById("favorite-btn");
+function toggleFavorite(index) {
+  quotes[index].favorite = !quotes[index].favorite;
+  console.log("add to favorite quote" + index);
+}
+
+favoritebutton.addEventListener("click", () => {
+  if (currentQuoteIndex != null) {
+    toggleFavorite(currentQuoteIndex);
+  }
+});
 //theme
 const themeBtn = document.getElementById("theme-btn");
 
