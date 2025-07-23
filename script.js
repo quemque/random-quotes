@@ -1,4 +1,5 @@
 import quotes from "./quotes.js";
+
 //generate quote
 const quoteElement = document.getElementById("quote");
 const generateBtn = document.getElementById("generate-btn");
@@ -19,13 +20,13 @@ function generateRandomQuote() {
 }
 
 generateBtn.addEventListener("click", generateRandomQuote);
+
 //favorite quote
 let currentQuoteIndex = null;
-
 const favoritebutton = document.getElementById("favorite-btn");
 function toggleFavorite(index) {
   quotes[index].favorite = !quotes[index].favorite;
-  console.log("add to favorite quote" + index);
+  console.log(quotes);
 }
 
 favoritebutton.addEventListener("click", () => {
@@ -33,6 +34,7 @@ favoritebutton.addEventListener("click", () => {
     toggleFavorite(currentQuoteIndex);
   }
 });
+
 //theme
 const themeBtn = document.getElementById("theme-btn");
 

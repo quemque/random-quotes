@@ -26,6 +26,11 @@ const quotes = [
     favorite: false,
   },
   {
+    quote: "mya mya mya, myr myr myr",
+    author: "Maya",
+    favorite: false,
+  },
+  {
     quote: "I have not failed. I've just found 10,000 ways that won't work",
     author: "Thomas Edison",
     favorite: false,
