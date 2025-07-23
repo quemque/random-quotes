@@ -21,14 +21,37 @@ function generateRandomQuote() {
 
 generateBtn.addEventListener("click", generateRandomQuote);
 
+//favorite card
+const favoritesField = document.getElementById("favorites-field");
+
+function renderFavorites() {
+  favoritesField.innerHTML = "";
+  const favoriteQuotes = quotes.filter((q) => q.favorite);
+  if (favoriteQuotes.length === 0) {
+    favoritesField.style.display = "none";
+    return;
+  }
+  favoritesField.style.display = "flex";
+  favoriteQuotes.forEach(({ quote, author }) => {
+    const card = document.createElement("div");
+    card.className = "favorite-card";
+    card.innerHTML = `
+      <div class="favorite-card-quote">"${quote}"</div>
+      <div class="favorite-card-author">${author}</div>
+    `;
+    favoritesField.appendChild(card);
+  });
+}
+
 //favorite quote
 let currentQuoteIndex = null;
 const favoritebutton = document.getElementById("favorite-btn");
 function toggleFavorite(index) {
   quotes[index].favorite = !quotes[index].favorite;
+  renderFavorites();
   console.log(quotes);
 }
-
+renderFavorites();
 favoritebutton.addEventListener("click", () => {
   if (currentQuoteIndex != null) {
     toggleFavorite(currentQuoteIndex);
