@@ -49,7 +49,6 @@ const favoritebutton = document.getElementById("favorite-btn");
 function toggleFavorite(index) {
   quotes[index].favorite = !quotes[index].favorite;
   renderFavorites();
-  console.log(quotes);
 }
 renderFavorites();
 favoritebutton.addEventListener("click", () => {

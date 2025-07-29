@@ -32,7 +32,10 @@ body {
   color: #fff;
   transition: background-color 0.3s, color 0.3s;
 }
-
+body.light-theme .favorites-field {
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
 body.light-theme {
   background: #fff;
   color: #222;
@@ -42,12 +45,29 @@ body.light-theme {
   margin-bottom: 8px;
 }
 .favorites-field {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   max-width: 600px;
-  margin: 30px auto 0;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
+
+  will-change: transform;
+  max-height: 50vh;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  background: #333;
+  border-top: 1px solid #555;
+  z-index: 10;
 }
 
 .favorite-card {
@@ -60,6 +80,9 @@ body.light-theme {
   flex-direction: column;
   align-items: flex-start;
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .favorite-card-author {
   font-size: 0.95em;
@@ -71,6 +94,7 @@ body.light-theme {
   margin: 50px auto;
   text-align: center;
   padding: 0 10px;
+  margin-bottom: 30vh;
 }
 
 .quote-container {
@@ -130,8 +154,52 @@ body.light-theme {
   background: none;
 }
 
+/*кастомный скроллбар для избранного*/
+.favorites-field::-webkit-scrollbar {
+  width: 8px;
+}
+.favorites-field::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 4px;
+}
+.favorites-field::-webkit-scrollbar-track {
+  background: #333;
+}
+
+/*светлая тема */
+body.light-theme .favorites-field::-webkit-scrollbar-thumb {
+  background: #aaa;
+}
+body.light-theme .favorites-field::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+/*Фикс выделения текста при нажатии*/
+.favorite-btn,
+#generate-btn,
+.theme-toggle {
+  -webkit-tap-highlight-color: transparent; /* Для мобильных */
+  user-select: none; /* Запрет выделения текста */
+  outline: none; /* Убираем контур при фокусе (замените на свой стиль) */
+}
+/*Анимация добавления*/
+.favorite-card {
+  animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 /* Адаптивность */
 @media (max-width: 600px) {
+  .container {
+    margin-bottom: 40vh;
+  }
   .quote-container {
     flex-direction: column;
     align-items: center;
