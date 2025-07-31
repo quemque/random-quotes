@@ -1,36 +1,54 @@
-import quotes from "./quotes.js";
+import quotes from "./src/quotes.js";
+import { toggleFavoriteIcon } from "./src/favoritesHandler.js";
 
-//generate quote
+// DOM elements
 const quoteElement = document.getElementById("quote");
 const generateBtn = document.getElementById("generate-btn");
 const quoteAuthorElement = document.getElementById("quote-author");
-let lastIndex = -1;
+const favoritesField = document.getElementById("favorites-field");
+const favoriteButton = document.getElementById("favorite-btn");
+const themeBtn = document.getElementById("theme-btn");
 
+// State variables
+let lastIndex = -1;
+let currentQuoteIndex = null;
+
+// Generate random quote
 function generateRandomQuote() {
   let randomIndex;
   do {
     randomIndex = Math.floor(Math.random() * quotes.length);
   } while (randomIndex === lastIndex && quotes.length > 1);
+
   lastIndex = randomIndex;
   currentQuoteIndex = randomIndex;
-  const { quote, author } = quotes[randomIndex];
+  const { quote, author, favorite } = quotes[randomIndex];
 
-  quoteElement.textContent = '"' + quote + '"';
+  quoteElement.textContent = `"${quote}"`;
   quoteAuthorElement.textContent = author;
+
+  toggleFavoriteIcon(favorite, favoriteButton);
 }
 
-generateBtn.addEventListener("click", generateRandomQuote);
+// Toggle favorite status
+function toggleFavorite(index) {
+  if (index === null || index === undefined) return;
 
-//favorite card
-const favoritesField = document.getElementById("favorites-field");
+  quotes[index].favorite = !quotes[index].favorite;
+  toggleFavoriteIcon(quotes[index].favorite, favoriteButton);
+  renderFavorites();
+}
 
+// Render favorite quotes
 function renderFavorites() {
   favoritesField.innerHTML = "";
   const favoriteQuotes = quotes.filter((q) => q.favorite);
+
   if (favoriteQuotes.length === 0) {
     favoritesField.style.display = "none";
     return;
   }
+
   favoritesField.style.display = "flex";
   favoriteQuotes.forEach(({ quote, author }) => {
     const card = document.createElement("div");
@@ -43,32 +61,21 @@ function renderFavorites() {
   });
 }
 
-//favorite quote
-let currentQuoteIndex = null;
-const favoritebutton = document.getElementById("favorite-btn");
-function toggleFavorite(index) {
-  quotes[index].favorite = !quotes[index].favorite;
-  renderFavorites();
-}
-renderFavorites();
-favoritebutton.addEventListener("click", () => {
-  if (currentQuoteIndex != null) {
-    toggleFavorite(currentQuoteIndex);
-  }
-});
-
-//theme
-const themeBtn = document.getElementById("theme-btn");
-
+// Toggle theme
 function toggleTheme() {
   document.body.classList.toggle("light-theme");
-
   const isLight = document.body.classList.contains("light-theme");
   localStorage.setItem("lightTheme", isLight);
 }
 
+// Event listeners
+generateBtn.addEventListener("click", generateRandomQuote);
+favoriteButton.addEventListener("click", () =>
+  toggleFavorite(currentQuoteIndex)
+);
+themeBtn.addEventListener("click", toggleTheme);
+
+// Initialize
 if (localStorage.getItem("lightTheme") === "true") {
   document.body.classList.add("light-theme");
 }
-
-themeBtn.addEventListener("click", toggleTheme);
