@@ -1,4 +1,4 @@
-import quotes from "./src/quotes.js";
+import quotes from "./src/data/quotes.js";
 import { toggleFavoriteIcon } from "./src/favoritesHandler.js";
 
 // DOM elements
@@ -8,10 +8,10 @@ const quoteAuthorElement = document.getElementById("quote-author");
 const favoritesField = document.getElementById("favorites-field");
 const favoriteButton = document.getElementById("favorite-btn");
 const themeBtn = document.getElementById("theme-btn");
+const themeImg = document.getElementById("themeimg");
 
 // State variables
 let lastIndex = -1;
-let currentQuoteIndex = null;
 
 // Generate random quote
 function generateRandomQuote() {
@@ -21,7 +21,6 @@ function generateRandomQuote() {
   } while (randomIndex === lastIndex && quotes.length > 1);
 
   lastIndex = randomIndex;
-  currentQuoteIndex = randomIndex;
   const { quote, author, favorite } = quotes[randomIndex];
 
   quoteElement.textContent = `"${quote}"`;
@@ -66,14 +65,14 @@ function toggleTheme() {
   document.body.classList.toggle("light-theme");
   const isLight = document.body.classList.contains("light-theme");
   localStorage.setItem("lightTheme", isLight);
+  themeImg.src = isLight ? "./Img/dark_theme.png" : "./Img/light_theme.png";
 }
 
 // Event listeners
 generateBtn.addEventListener("click", generateRandomQuote);
-favoriteButton.addEventListener("click", () =>
-  toggleFavorite(currentQuoteIndex)
-);
+favoriteButton.addEventListener("click", () => toggleFavorite(lastIndex));
 themeBtn.addEventListener("click", toggleTheme);
+themeImg.src = "./Img/dark_theme.png";
 
 // Initialize
 if (localStorage.getItem("lightTheme") === "true") {
