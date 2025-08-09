@@ -157,7 +157,23 @@ body.light-theme {
 .parent-of-button {
   background: none;
 }
-
+/*Удаление элемента*/
+.delete-favorite-btn {
+  background: transparent;
+  border: none;
+  color: #d9534f;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.1em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.delete-favorite-btn:hover {
+  background: rgba(217, 83, 79, 0.1);
+}
 /*кастомный скроллбар для избранного*/
 .favorites-field::-webkit-scrollbar {
   width: 8px;
