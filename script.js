@@ -17,12 +17,8 @@ let currentQuote = null;
 async function fetchRandomQuote() {
   const response = await fetch("/api/quote");
   const data = await response.json();
-  return {
-    quote: data.content,
-    author: data.author,
-    favorite: false,
-    id: data._id,
-  };
+  console.log(data.content); // Теперь данные доступны
+  return data.content;
 }
 
 async function generateRandomQuote() {
