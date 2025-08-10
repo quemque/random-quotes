@@ -33,7 +33,6 @@ function toggleFavorite(index) {
 function handleDeleteFavorite(index) {
   quotes[index].favorite = false;
   renderFavorites(quotes, favoritesField, handleDeleteFavorite);
-  // Optionally, update the main quote's star if it's the current one
   if (lastIndex === index) {
     toggleFavoriteIcon(false, favoriteButton);
   }

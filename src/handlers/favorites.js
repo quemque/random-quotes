@@ -28,7 +28,6 @@ export function renderFavorites(quotes, favoritesField, onDelete) {
     favoritesField.appendChild(card);
   });
 
-  // Attach delete event listeners
   favoritesField.querySelectorAll(".delete-favorite-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const idx = parseInt(btn.getAttribute("data-index"), 10);
