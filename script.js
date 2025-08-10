@@ -1,31 +1,53 @@
-import quotes from "./src/data/quotes.js";
-import {
-  toggleFavoriteIcon,
-  renderFavorites,
-} from "./src/handlers/favorites.js";
-import { toggleTheme, applyTheme } from "./src/handlers/theme.js";
-import { toggleFavoriteStatus } from "./src/handlers/quote.js";
-import { getRandomint } from "./src/utils/math.js";
+import { toggleFavoriteIcon, renderFavorites } from "./handlers/favorites.js";
+import { toggleTheme, applyTheme } from "./handlers/theme.js";
+import { toggleFavoriteStatus } from "./handlers/quote.js";
 
 // DOM elements
 const generateBtn = document.getElementById("generate-btn");
 const favoriteButton = document.getElementById("favorite-btn");
 const favoritesField = document.getElementById("favorites-field");
-let lastIndex = -1;
-
 const quoteElement = document.getElementById("quote");
 const quoteAuthorElement = document.getElementById("quote-author");
 
-function generateRandomQuote() {
-  const { quote, author, favorite, index } = getRandomint(quotes, lastIndex);
-  lastIndex = index;
-  quoteElement.textContent = `"${quote}"`;
-  quoteAuthorElement.textContent = author;
-  toggleFavoriteIcon(favorite, favoriteButton);
+// Store quotes in memory
+let quotes = [];
+let currentQuote = null;
+
+// Fetch quotes from API
+async function fetchRandomQuote() {
+  const response = await fetch("/api/quote");
+  const data = await response.json();
+  return {
+    quote: data.content,
+    author: data.author,
+    favorite: false,
+    id: data._id,
+  };
 }
 
-function toggleFavorite(index) {
-  const isFavorite = toggleFavoriteStatus(quotes, index);
+async function generateRandomQuote() {
+  currentQuote = await fetchRandomQuote();
+  quoteElement.textContent = `"${currentQuote.quote}"`;
+  quoteAuthorElement.textContent = currentQuote.author;
+
+  const isFavorite = quotes.some((q) => q.id === currentQuote.id && q.favorite);
+  toggleFavoriteIcon(isFavorite, favoriteButton);
+
+  if (!quotes.some((q) => q.id === currentQuote.id)) {
+    quotes.push({ ...currentQuote });
+  }
+}
+
+function toggleFavorite() {
+  if (!currentQuote) return;
+
+  const quoteIndex = quotes.findIndex((q) => q.id === currentQuote.id);
+
+  if (quoteIndex === -1) {
+    quotes.push({ ...currentQuote });
+  }
+
+  const isFavorite = toggleFavoriteStatus(quotes, quoteIndex);
   toggleFavoriteIcon(isFavorite, favoriteButton);
   renderFavorites(quotes, favoritesField, handleDeleteFavorite);
 }
@@ -33,7 +55,8 @@ function toggleFavorite(index) {
 function handleDeleteFavorite(index) {
   quotes[index].favorite = false;
   renderFavorites(quotes, favoritesField, handleDeleteFavorite);
-  if (lastIndex === index) {
+
+  if (currentQuote && quotes[index].id === currentQuote.id) {
     toggleFavoriteIcon(false, favoriteButton);
   }
 }
@@ -46,7 +69,7 @@ themeBtn.addEventListener("click", () => toggleTheme(themeImg));
 
 // Event listeners
 generateBtn.addEventListener("click", generateRandomQuote);
-favoriteButton.addEventListener("click", () => toggleFavorite(lastIndex));
+favoriteButton.addEventListener("click", toggleFavorite);
 
-// Initial render of favorites
+// Initial render of favorites (empty)
 renderFavorites(quotes, favoritesField, handleDeleteFavorite);
