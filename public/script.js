@@ -24,16 +24,21 @@ async function fetchRandomQuote() {
 
     const data = await response.json();
 
+    // Если API вернуло fallback
+    if (data.fallback) {
+      console.warn("Using fallback quote:", data.error);
+    }
+
     return {
       quote: data.content,
       author: data.author,
       favorite: false,
-      id: data._id || Date.now().toString(), // fallback ID
+      id: data.id,
     };
   } catch (error) {
     console.error("Fetch error:", error);
     return {
-      quote: "Couldn't load quote. Please try again.",
+      quote: "Failed to load quote. Please try again later.",
       author: "System",
       favorite: false,
       id: "error-" + Date.now(),
