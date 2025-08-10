@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "vercel": "^44.7.3"
-  },
-  "scripts": {
-    "build": "echo \"No build step needed\""
-  }
-}
