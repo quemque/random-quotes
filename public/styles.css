@@ -47,6 +47,7 @@ body.light-theme {
 .favorite-card-quote {
   font-style: italic;
   margin-bottom: 8px;
+  margin-right: 5px;
 }
 .favorites-field {
   position: fixed;
