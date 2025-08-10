@@ -15,16 +15,34 @@ let currentQuote = null;
 
 // Fetch quotes from API
 async function fetchRandomQuote() {
-  const response = await fetch("/api/quote");
-  const data = await response.json();
-  console.log(data.content); // Теперь данные доступны
-  return data.content;
+  try {
+    const response = await fetch("/api/quote");
+    if (!response.ok) throw new Error("Failed to fetch quote");
+    const data = await response.json();
+
+    return {
+      quote: data.content,
+      author: data.author,
+      favorite: false,
+      id: data._id,
+    };
+  } catch (error) {
+    console.error("Error fetching quote:", error);
+    return {
+      quote: "Failed to load quote. Please try again.",
+      author: "System",
+      favorite: false,
+      id: "error-" + Date.now(),
+    };
+  }
 }
 
 async function generateRandomQuote() {
   currentQuote = await fetchRandomQuote();
-  quoteElement.textContent = `"${currentQuote.quote}"`;
-  quoteAuthorElement.textContent = currentQuote.author;
+
+  const { quote, author } = currentQuote;
+  quoteElement.textContent = `"${quote}"`;
+  quoteAuthorElement.textContent = author;
 
   const isFavorite = quotes.some((q) => q.id === currentQuote.id && q.favorite);
   toggleFavoriteIcon(isFavorite, favoriteButton);
