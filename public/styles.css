@@ -47,7 +47,6 @@ body.light-theme {
 .favorite-card-quote {
   font-style: italic;
   margin-bottom: 8px;
-  margin-right: 5px;
 }
 .favorites-field {
   position: fixed;
@@ -77,6 +76,8 @@ body.light-theme {
 .favorite-card {
   border-radius: 10px;
   padding: 16px;
+  padding-right: 28px;
+  margin: 8px 4px;
   min-width: 220px;
   max-width: 260px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -168,10 +169,6 @@ body.light-theme {
   color: #d9534f;
   cursor: pointer;
   position: absolute;
-  /* top: 8px;
-  right: 8px;
-  font-size: 1.1em;
-  padding: 2px 6px; */
   border-radius: 4px;
   transition: background 0.2s;
 }
@@ -201,9 +198,9 @@ body.light-theme .favorites-field::-webkit-scrollbar-track {
 .favorite-btn,
 #generate-btn,
 .theme-toggle {
-  -webkit-tap-highlight-color: transparent; /* Для мобильных */
-  user-select: none; /* Запрет выделения текста */
-  outline: none; /* Убираем контур при фокусе (замените на свой стиль) */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  outline: none;
 }
 /*Анимация добавления*/
 .favorite-card {

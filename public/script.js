@@ -24,7 +24,6 @@ async function fetchRandomQuote() {
 
     const data = await response.json();
 
-    // Если API вернуло fallback
     if (data.fallback) {
       console.warn("Using fallback quote:", data.error);
     }
