@@ -1,46 +1,38 @@
-// api/quote.js
+import https from "https";
 import fetch from "node-fetch";
 
-export default async (request, response) => {
-  // Логирование начала выполнения
-  console.log("Start fetching quote");
+// Отключаем проверку SSL (только для этого запроса)
+const agent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
+export default async (req, res) => {
   try {
-    // 1. Делаем запрос к API
-    const apiResponse = await fetch("https://api.quotable.io/random", {
+    const response = await fetch("https://api.quotable.io/random", {
+      agent,
       headers: {
         "User-Agent": "random-quotes-vercel-app",
       },
     });
 
-    console.log("API response status:", apiResponse.status);
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
 
-    // 2. Проверяем статус
-    if (!apiResponse.ok) {
-      throw new Error(`API responded with ${apiResponse.status}`);
-    }
+    const data = await response.json();
 
-    // 3. Парсим данные
-    const data = await apiResponse.json();
-    console.log("Received data:", data);
-
-    // 4. Форматируем ответ
-    response.setHeader("Content-Type", "application/json");
-    response.status(200).json({
-      success: true,
+    res.status(200).json({
       content: data.content,
       author: data.author,
       id: data._id,
+      source: "quotable",
     });
   } catch (error) {
-    // 5. Обработка ошибок
-    console.error("Full error:", error);
+    console.error("API Error:", error);
 
-    // Fallback данные
-    const fallbackQuotes = [
+    // Локальные цитаты как fallback
+    const fallbacks = [
       {
-        content: "The best preparation for tomorrow is doing your best today.",
-        author: "H. Jackson Brown Jr.",
+        content: "The only way to do great work is to love what you do.",
+        author: "Steve Jobs",
         id: "fallback-1",
       },
       {
@@ -50,14 +42,12 @@ export default async (request, response) => {
       },
     ];
 
-    const randomFallback =
-      fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+    const fallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
 
-    response.status(200).json({
-      success: false,
+    res.status(200).json({
+      ...fallback,
       error: error.message,
       fallback: true,
-      ...randomFallback,
     });
   }
 };
