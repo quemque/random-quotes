@@ -17,19 +17,23 @@ let currentQuote = null;
 async function fetchRandomQuote() {
   try {
     const response = await fetch("/api/quote");
-    if (!response.ok) throw new Error("Failed to fetch quote");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
 
     return {
       quote: data.content,
       author: data.author,
       favorite: false,
-      id: data._id,
+      id: data._id || Date.now().toString(), // fallback ID
     };
   } catch (error) {
-    console.error("Error fetching quote:", error);
+    console.error("Fetch error:", error);
     return {
-      quote: "Failed to load quote. Please try again.",
+      quote: "Couldn't load quote. Please try again.",
       author: "System",
       favorite: false,
       id: "error-" + Date.now(),
