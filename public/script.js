@@ -58,6 +58,7 @@ async function generateRandomQuote() {
   if (!quotes.some((q) => q.id === currentQuote.id)) {
     quotes.push({ ...currentQuote });
   }
+  favoriteButton.style.display = "inline-block";
 }
 
 function toggleFavorite() {
