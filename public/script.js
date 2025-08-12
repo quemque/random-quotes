@@ -16,7 +16,6 @@ let quoteQueue = [];
 let currentQuote = null;
 
 // Fetch quotes from API
-// script.js
 async function fetchMultipleQuotes(count = 10) {
   try {
     const responses = await Promise.all(
@@ -54,12 +53,10 @@ async function fetchMultipleQuotes(count = 10) {
 }
 
 async function generateRandomQuote() {
-  //console.log(quoteQueue.length);
   if (quoteQueue.length < 3) {
     fetchMultipleQuotes(5)
       .then((newQuotes) => {
         quoteQueue.push(...newQuotes);
-        console.log("Added new quotes to queue:", newQuotes.length);
       })
       .catch((error) => {
         console.error("Failed to fetch more quotes:", error);
@@ -69,15 +66,7 @@ async function generateRandomQuote() {
   currentQuote = quoteQueue.shift();
 
   if (!currentQuote) {
-    console.log("fallback");
-
-    const ranfallbackq =
-      fallbackq[Math.floor(Math.random() * fallbackq.length)];
-    quoteElement.textContent = `"${ranfallbackq.quote}"`;
-    quoteAuthorElement.textContent = ranfallbackq.author;
-    favoriteButton.style.display = "inline-block";
-    currentQuote = ranfallbackq;
-    return;
+    currentQuote = fallbackq[Math.floor(Math.random() * fallbackq.length)];
   }
 
   const { quote, author } = currentQuote;
