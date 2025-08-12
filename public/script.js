@@ -69,17 +69,8 @@ async function generateRandomQuote() {
     currentQuote = fallbackq[Math.floor(Math.random() * fallbackq.length)];
   }
 
-  const { quote, author } = currentQuote;
-  quoteElement.textContent = `"${quote}"`;
-  quoteAuthorElement.textContent = author;
-
-  const isFavorite = quotes.some((q) => q.id === currentQuote.id && q.favorite);
-  toggleFavoriteIcon(isFavorite, favoriteButton);
-
-  if (!quotes.some((q) => q.id === currentQuote.id)) {
-    quotes.push({ ...currentQuote });
-  }
-  favoriteButton.style.display = "inline-block";
+  renderCurrentQuote();
+  localStorage.setItem("currentquote", JSON.stringify(currentQuote));
 }
 
 function toggleFavorite() {
@@ -92,34 +83,68 @@ function toggleFavorite() {
   }
 
   const isFavorite = toggleFavoriteStatus(quotes, quoteIndex);
+
+  //localStorage
+  localStorage.setItem("quotes", JSON.stringify(quotes));
+  localStorage.setItem("currentquote", JSON.stringify(currentQuote));
+
   toggleFavoriteIcon(isFavorite, favoriteButton);
   renderFavorites(quotes, favoritesField, handleDeleteFavorite);
 }
 
 function handleDeleteFavorite(index) {
   quotes[index].favorite = false;
+  localStorage.setItem("quotes", JSON.stringify(quotes));
   renderFavorites(quotes, favoritesField, handleDeleteFavorite);
 
   if (currentQuote && quotes[index].id === currentQuote.id) {
     toggleFavoriteIcon(false, favoriteButton);
   }
 }
-//initialization
-async function initQuotesOnLoad() {
-  const newQuotes = await fetchMultipleQuotes(5);
-  quoteQueue.push(...newQuotes);
+
+function renderCurrentQuote() {
+  if (!currentQuote) return;
+  const { quote, author } = currentQuote;
+  quoteElement.textContent = `"${quote}"`;
+  quoteAuthorElement.textContent = author;
+
+  const isFavorite = quotes.some((q) => q.id === currentQuote.id && q.favorite);
+  toggleFavoriteIcon(isFavorite, favoriteButton);
+
+  if (!quotes.some((q) => q.id === currentQuote.id)) {
+    quotes.push({ ...currentQuote });
+  }
+
+  favoriteButton.style.display = "inline-block";
 }
 
 // Theme logic
 const themeBtn = document.getElementById("theme-btn");
 const themeImg = document.getElementById("themeimg");
-applyTheme(themeImg);
 themeBtn.addEventListener("click", () => toggleTheme(themeImg));
 
 // Event listeners
 generateBtn.addEventListener("click", generateRandomQuote);
 favoriteButton.addEventListener("click", toggleFavorite);
 
-// Initial render of favorites (empty)
-renderFavorites(quotes, favoritesField, handleDeleteFavorite);
+//initialization
+async function initQuotesOnLoad() {
+  applyTheme(themeImg);
+
+  //current quote
+  currentQuote = JSON.parse(localStorage.getItem("currentquote"));
+
+  //favorite field
+  let savedQuotes = JSON.parse(localStorage.getItem("quotes") || "[]");
+  if (Array.isArray(savedQuotes)) {
+    quotes = savedQuotes;
+  }
+  renderFavorites(quotes, favoritesField, handleDeleteFavorite);
+
+  renderCurrentQuote();
+
+  const newQuotes = await fetchMultipleQuotes(5);
+  quoteQueue.push(...newQuotes);
+}
+
 initQuotesOnLoad();
