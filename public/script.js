@@ -86,7 +86,6 @@ function toggleFavorite() {
 
   //localStorage
   localStorage.setItem("quotes", JSON.stringify(quotes));
-  localStorage.setItem("currentquote", JSON.stringify(currentQuote));
 
   toggleFavoriteIcon(isFavorite, favoriteButton);
   renderFavorites(quotes, favoritesField, handleDeleteFavorite);
