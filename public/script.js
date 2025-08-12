@@ -5,6 +5,7 @@ import { fallbackq } from "./fallbackq.js";
 
 // DOM elements
 const generateBtn = document.getElementById("generate-btn");
+const previousBtn = document.getElementById("previous-btn");
 const favoriteButton = document.getElementById("favorite-btn");
 const favoritesField = document.getElementById("favorites-field");
 const quoteElement = document.getElementById("quote");
@@ -70,6 +71,7 @@ async function generateRandomQuote() {
   }
 
   renderCurrentQuote();
+  localStorage.setItem("quotes", JSON.stringify(quotes));
   localStorage.setItem("currentquote", JSON.stringify(currentQuote));
 }
 
@@ -116,6 +118,17 @@ function renderCurrentQuote() {
 
   favoriteButton.style.display = "inline-block";
 }
+function togglePrevious() {
+  if (!currentQuote || !quotes.length) return;
+
+  const currentIndex = quotes.findIndex((q) => q.id === currentQuote.id);
+
+  if (currentIndex > 0) {
+    currentQuote = quotes[currentIndex - 1];
+    renderCurrentQuote();
+    localStorage.setItem("currentquote", JSON.stringify(currentQuote));
+  }
+}
 
 // Theme logic
 const themeBtn = document.getElementById("theme-btn");
@@ -125,7 +138,7 @@ themeBtn.addEventListener("click", () => toggleTheme(themeImg));
 // Event listeners
 generateBtn.addEventListener("click", generateRandomQuote);
 favoriteButton.addEventListener("click", toggleFavorite);
-
+previousBtn.addEventListener("click", togglePrevious);
 //initialization
 async function initQuotesOnLoad() {
   applyTheme(themeImg);
